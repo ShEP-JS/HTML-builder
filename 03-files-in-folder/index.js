@@ -8,8 +8,9 @@ fs.readdir(url, option, (err, files) => {
   arr.forEach(element => {
     let extname=path.extname(element.name);
     fs.stat(path.join(url,element.name), (error, stats) => {
+      if (error) throw error;
       let size= +stats.size/1024;
-      console.log (path.basename(element.name, extname) + ' - ' + extname + ' - ' + size + 'kb');
+      console.log (path.basename(element.name, extname) + ' - ' + extname.substring(1) + ' - ' + size + 'kb');
     });
     
   });
