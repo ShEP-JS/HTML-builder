@@ -4,8 +4,21 @@ const option = {withFileTypes: true};
 const recursive= { recursive: true };
 function copyDir () {
   const filesCopyDir=path.join(__dirname,'files-copy');
-  fs.mkdir(path.join(__dirname, 'files-copy'), recursive, err => {
-    if (err) throw err;
+  fs.stat(filesCopyDir, (err) =>{
+    if (!err) {
+      fs.rm(filesCopyDir, recursive, (err) => {
+        if (err) throw err; 
+        copyFiles(filesCopyDir);
+      });
+    } else {
+      copyFiles(filesCopyDir);
+    }
+  });
+}
+
+function copyFiles(filesCopyDir) {
+  fs.mkdir(filesCopyDir, error => {
+    if (error) throw error;
     const url=path.join(__dirname,'files');
     fs.readdir(url, option, (err, files) => {
       if(err) throw err;
@@ -16,6 +29,6 @@ function copyDir () {
       });
     });
   });
-}
 
+}
 copyDir ();
